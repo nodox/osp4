@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "fsck.h"
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -9,8 +8,20 @@
 
 //http://codewiki.wikidot.com/c:system-calls:fstat
 
+
+#define BSIZE 512  // block size           
+
+// File system super block                                                      
+struct superblock {
+  uint size;         // Size of file system image (blocks)                      
+  uint nblocks;      // Number of data blocks                                   
+  uint ninodes;      // Number of inodes.                                       
+};
+
 void *fsptr; 
 struct superblock *sb;
+
+
 
 
 
