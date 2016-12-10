@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
   printf("size: %d nblocks: %d ninodes: %d\n", sb->size, sb->nblocks, sb->ninodes);
 
   while(1) {
-    printf("%c\n", fsptr++);
+    printf("%c\n", *fsptr);
   }
 
 
