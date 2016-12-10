@@ -99,12 +99,12 @@ int main(int argc, char *argv[])
   fsptr = mmap(NULL, fsize, PROT_READ|PROT_WRITE, MAP_SHARED, fd, 0);
 
   sb = (struct superblock*)((void*)fsptr + BSIZE); //super block starts at second block
-  printf("size: %d nblocks: %d ninodes: %d\n", sb->size, sb->nblocks, sb->ninodes);
+  printf("size: %d nblocks: %d ninodes: %d\n startinode: %d\n", sb->size, sb->nblocks, sb->ninodes, sb->inodestart);
 
-  while(1) {
-    fsptr = fsptr + 512;
-    printf("%s\n", (char*)fsptr);
-  }
+  // while(1) {
+  //   fsptr = fsptr + 12;
+  //   printf("%s\n", (char*)fsptr);
+  // }
 
 
 
