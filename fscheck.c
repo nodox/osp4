@@ -101,7 +101,9 @@ int main(int argc, char *argv[])
   sb = (struct superblock*)((void*)fsptr + BSIZE); //super block starts at second block
   printf("size: %d nblocks: %d ninodes: %d\n", sb->size, sb->nblocks, sb->ninodes);
 
-  printf("%p\n", fsptr);
+  while(1) {
+    printf("%c\n", fsptr++);
+  }
 
 
 
