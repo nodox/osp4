@@ -7,7 +7,7 @@
 
 typedef unsigned int uint;
 typedef unsigned short ushort;
-
+typedef unsigned char uchar;
 
 // Disk layout:
 // [ boot block | super block | log | inode blocks |
