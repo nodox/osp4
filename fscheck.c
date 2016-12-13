@@ -10,7 +10,7 @@
 struct superblock super_block;
 char block_buff[BSIZE];
 
-// helper methods to save space using bitmap data in the main method
+// helper methods for using bitmap data in the main method
 
 // bitmasks
 const uchar bitmasks[8] = {0b00000001, 0b00000010, 0b00000100, 0b00001000, 0b00010000, 0b00100000, 0b01000000, 0b10000000};
@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
     memcpy(&inodes[i * IPB], block_buff, BSIZE);
   }
   // seek to bitmap
-  fseek(fsimg, BSIZE*(super_block.bmapstart+2), SEEK_CUR);
+  fseek(fsimg, BSIZE*(super_block.bmapstart), SEEK_SET);
 
   int numbitmap = (super_block.size + BPB - 1) / BPB;
   uchar bitmap[BSIZE * numbitmap];
@@ -117,7 +117,6 @@ int main(int argc, char *argv[])
 
   ushort refs[super_block.ninodes];
   memset(refs, 0, sizeof(refs));
-  refs[1] = 1;
 
   
   // recurse fs starting at root, storing data for later structure checks
@@ -242,7 +241,7 @@ int main(int argc, char *argv[])
     }
   }
   printf("%s\n", "finished first pass of fs for links and presence");
-  
+
   // compare developed bitmap to given bitmap
   printf("%s\n", "starting bitmap check/comparison");
   for (int i = 0; i < numbitmap; ++i)
@@ -265,7 +264,7 @@ int main(int argc, char *argv[])
 
   // check structure and compare inodes array to observed objects (files, directories etc.)
   printf("%s\n", "starting structure check and inode comparison");
-  for (int i = 0; i < super_block.ninodes; ++i)
+  for (int i = 0; i < (super_block.ninodes-sizeof(double)); ++i)
   {
     if (inodes[i].type == 0)
     {
@@ -273,6 +272,8 @@ int main(int argc, char *argv[])
         fprintf(stderr, "%s\n", "ERROR: inode referred to in directory but marked free");
         exit(1);
       }
+    }
+    else {
       if(refs[i] == 0){
         fprintf(stderr, "%s\n", "ERROR: inode marked use but not found in a directory");
         exit(1);
